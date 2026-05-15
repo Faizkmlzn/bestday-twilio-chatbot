@@ -30,11 +30,12 @@ const sheetRange = process.env.GOOGLE_SHEET_RANGE || 'ChatLog!A:D';
 
 const googleCredentialPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
-// Cek env penting agar mudah debugging di Render Logs
+// Debug env penting di Render Logs
 console.log('GOOGLE_PROJECT_ID:', projectId || 'BELUM DIISI');
 console.log('DIALOGFLOW_LANGUAGE_CODE:', languageCode);
 console.log('DIALOGFLOW_KNOWLEDGE_BASE_ID:', knowledgeBaseId || 'TIDAK DIGUNAKAN');
 console.log('GOOGLE_SHEET_ID:', sheetId ? 'TERISI' : 'BELUM DIISI');
+console.log('GOOGLE_SHEET_RANGE:', sheetRange);
 console.log('GOOGLE_APPLICATION_CREDENTIALS:', googleCredentialPath || 'BELUM DIISI');
 
 // =====================
@@ -59,7 +60,7 @@ async function callGDF(req) {
   const userText = req.body.Body || '';
 
   // Gunakan nomor WhatsApp user sebagai session ID
-  // supaya session tiap user lebih konsisten.
+  // supaya percakapan tiap user lebih konsisten.
   const sessionId = String(userId)
     .replace('whatsapp:', '')
     .replace(/[^\w-]/g, '');
@@ -169,12 +170,20 @@ async function callGDF(req) {
   const prefix = salamType ? buildSalamPrefix(salamType) : '';
   const messageToSend = prefix + messageBody;
 
+  const intentName = result.intent ? result.intent.displayName : 'unknown';
+  const confidence = result.intentDetectionConfidence || 0;
+
   console.log('Query text:', result.queryText);
-  console.log('Intent:', result.intent ? result.intent.displayName : 'unknown');
-  console.log('Confidence:', result.intentDetectionConfidence);
+  console.log('Intent:', intentName);
+  console.log('Confidence:', confidence);
   console.log('Final reply:', messageToSend);
 
-  return messageToSend;
+  return {
+    replyText: messageToSend,
+    intentName: intentName,
+    queryText: result.queryText,
+    confidence: confidence,
+  };
 }
 
 // =====================
@@ -186,7 +195,7 @@ function initCsvHeader() {
   if (!fs.existsSync(csvLogFile)) {
     fs.writeFileSync(
       csvLogFile,
-      'time,userId,userText,botReply\n',
+      'time,userId,userText,botReply,intentName,isLead\n',
       'utf8'
     );
   }
@@ -197,9 +206,10 @@ function saveCsvLog(entry) {
 
   const safeUserText = (entry.userText || '').replace(/"/g, '""');
   const safeBotReply = (entry.botReply || '').replace(/"/g, '""');
+  const safeIntentName = (entry.intentName || '').replace(/"/g, '""');
 
   const line =
-    `"${entry.time}","${entry.userId}","${safeUserText}","${safeBotReply}"\n`;
+    `"${entry.time}","${entry.userId}","${safeUserText}","${safeBotReply}","${safeIntentName}","${entry.isLead}"\n`;
 
   fs.appendFile(csvLogFile, line, 'utf8', (err) => {
     if (err) {
@@ -223,6 +233,7 @@ async function appendToSheet({ time, userId, userText, botReply }) {
   });
 
   const authClient = await auth.getClient();
+
   const sheets = google.sheets({
     version: 'v4',
     auth: authClient,
@@ -245,6 +256,8 @@ async function appendToSheet({ time, userId, userText, botReply }) {
 // =====================
 function getTimeWIB() {
   const now = new Date();
+
+  // Render biasanya UTC, jadi tambah 7 jam untuk WIB
   now.setHours(now.getHours() + 7);
 
   const pad = n => String(n).padStart(2, '0');
@@ -257,6 +270,80 @@ function getTimeWIB() {
     pad(now.getMinutes()) + ':' +
     pad(now.getSeconds()) + ' WIB'
   );
+}
+
+// =====================
+// FILTER LEAD KONSULTASI
+// =====================
+function isSeriousConsultationLead(intentName, userText) {
+  const intent = String(intentName || '').toLowerCase();
+  const text = String(userText || '').toLowerCase();
+
+  // Deteksi utama dari nama intent Dialogflow
+  const intentIndicators = [
+    'konsultasi',
+    'consultation',
+    'admin',
+    'hubungi',
+    'cs',
+    'customer service',
+    'human',
+    'operator',
+    'booking',
+    'jadwalkan',
+  ];
+
+  if (intentIndicators.some(keyword => intent.includes(keyword))) {
+    return true;
+  }
+
+  // Deteksi cadangan dari isi chat user
+  const textIndicators = [
+    'konsultasi',
+    'mau konsultasi',
+    'ingin konsultasi',
+    'saya mau konsultasi',
+    'aku mau konsultasi',
+    'konsul',
+    'admin',
+    'hubungi admin',
+    'kontak admin',
+    'cs',
+    'customer service',
+    'operator',
+    'orang bestday',
+    'pihak bestday',
+    'tim bestday',
+    'mau tanya langsung',
+    'tanya langsung',
+    'ngobrol langsung',
+    'bicara langsung',
+    'mau lanjut',
+    'ingin lanjut',
+    'lanjut booking',
+    'mau booking',
+    'booking',
+    'book',
+    'jadwal konsultasi',
+    'saya tertarik',
+    'aku tertarik',
+    'tertarik',
+    'mau dibantu',
+    'minta dibantu',
+    'hubungi saya',
+    'kontak saya',
+    'bisa dihubungi',
+    'mau pakai jasa',
+    'mau pakai paket',
+    'mau deal',
+    'deal',
+    'dp',
+    'down payment',
+    'bayar dp',
+    'lanjut dengan bestday',
+  ];
+
+  return textIndicators.some(keyword => text.includes(keyword));
 }
 
 // =====================
@@ -280,26 +367,47 @@ async function handleTwilioWebhook(req, res) {
       return res.send(twiml.toString());
     }
 
-    const replyText = await callGDF(req);
+    const dialogflowResult = await callGDF(req);
+
+    const replyText = dialogflowResult.replyText;
+    const intentName = dialogflowResult.intentName;
+    const confidence = dialogflowResult.confidence;
+
     const timeWIB = getTimeWIB();
 
-    // Simpan ke CSV lokal Render
+    const shouldSaveToSheet = isSeriousConsultationLead(intentName, userText);
+
+    console.log('Lead konsultasi:', shouldSaveToSheet ? 'YA' : 'TIDAK');
+    console.log('Intent untuk filter lead:', intentName);
+    console.log('Confidence untuk filter lead:', confidence);
+
+    // CSV lokal Render tetap mencatat semua percakapan
     saveCsvLog({
       time: timeWIB,
       userId,
       userText,
       botReply: replyText || '',
+      intentName,
+      isLead: shouldSaveToSheet ? 'YES' : 'NO',
     });
 
-    // Simpan ke Google Sheets
-    appendToSheet({
-      time: timeWIB,
-      userId,
-      userText,
-      botReply: replyText || '',
-    }).catch(err => {
-      console.error('Error tulis ke Google Sheets:', err.message);
-    });
+    // Google Sheets hanya mencatat calon klien serius / lead konsultasi
+    if (shouldSaveToSheet) {
+      appendToSheet({
+        time: timeWIB,
+        userId,
+        userText,
+        botReply: replyText || '',
+      })
+        .then(() => {
+          console.log('Berhasil tulis lead konsultasi ke Google Sheets');
+        })
+        .catch(err => {
+          console.error('Error tulis ke Google Sheets:', err.message);
+        });
+    } else {
+      console.log('Tidak dicatat ke Google Sheets karena bukan lead konsultasi.');
+    }
 
     // Balas ke Twilio
     const twiml = new MessagingResponse();
@@ -326,10 +434,10 @@ async function handleTwilioWebhook(req, res) {
 // ENDPOINT WEBHOOK
 // =====================
 
-// Endpoint yang sesuai dengan kode lokal kamu
+// Endpoint utama sesuai webhook Twilio kamu
 app.post('/reply', handleTwilioWebhook);
 
-// Endpoint tambahan jika nanti mau pakai nama /whatsapp
+// Endpoint tambahan jika nanti ingin pakai /whatsapp
 app.post('/whatsapp', handleTwilioWebhook);
 
 // =====================
