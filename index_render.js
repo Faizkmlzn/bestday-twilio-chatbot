@@ -368,19 +368,62 @@ async function handleTwilioWebhook(req, res) {
       return res.send(twiml.toString());
     }
 
+    const timeWIB = getTimeWIB();
+
+    // =====================================================
+    // CEK FORM KONSULTASI DULU SEBELUM KIRIM KE DIALOGFLOW
+    // =====================================================
+    const isConsultationForm = isFilledConsultationForm(userText);
+
+    console.log('Form konsultasi terisi:', isConsultationForm ? 'YA' : 'TIDAK');
+
+    if (isConsultationForm) {
+      const replyText =
+        'Terima kasih kak, data konsultasinya sudah Bestday terima ya 😊\n\n' +
+        'Nanti admin Bestday akan membantu mengecek detail kebutuhan kakak dan menghubungi kakak untuk konsultasi lebih lanjut. See youu 🙌\n' +
+        '~MinBest';
+
+      // CSV tetap mencatat semua percakapan
+      saveCsvLog({
+        time: timeWIB,
+        userId,
+        userText,
+        botReply: replyText,
+        intentName: 'Filled Consultation Form',
+        isConsultationForm: 'YES',
+      });
+
+      // Google Sheets hanya mencatat form konsultasi yang sudah diisi
+      appendToSheet({
+        time: timeWIB,
+        userId,
+        userText,
+        botReply: replyText,
+      })
+        .then(() => {
+          console.log('Berhasil tulis data form konsultasi ke Google Sheets');
+        })
+        .catch(err => {
+          console.error('Error tulis ke Google Sheets:', err.message);
+        });
+
+      const twiml = new MessagingResponse();
+      twiml.message(replyText);
+
+      res.set('Content-Type', 'text/xml');
+      return res.send(twiml.toString());
+    }
+
+    // =====================================================
+    // KALAU BUKAN FORM, BARU KIRIM KE DIALOGFLOW
+    // =====================================================
+
     const dialogflowResult = await callGDF(req);
 
     const replyText = dialogflowResult.replyText;
     const intentName = dialogflowResult.intentName;
     const confidence = dialogflowResult.confidence;
 
-    const timeWIB = getTimeWIB();
-
-    // Filter utama:
-    // Google Sheets hanya mencatat jika pesan user adalah form konsultasi yang sudah diisi
-    const shouldSaveToSheet = isFilledConsultationForm(userText);
-
-    console.log('Form konsultasi terisi:', shouldSaveToSheet ? 'YA' : 'TIDAK');
     console.log('Intent:', intentName);
     console.log('Confidence:', confidence);
 
@@ -391,26 +434,11 @@ async function handleTwilioWebhook(req, res) {
       userText,
       botReply: replyText || '',
       intentName,
-      isConsultationForm: shouldSaveToSheet ? 'YES' : 'NO',
+      isConsultationForm: 'NO',
     });
 
-    // Google Sheets hanya mencatat data form konsultasi yang sudah diisi
-    if (shouldSaveToSheet) {
-      appendToSheet({
-        time: timeWIB,
-        userId,
-        userText,
-        botReply: replyText || '',
-      })
-        .then(() => {
-          console.log('Berhasil tulis data form konsultasi ke Google Sheets');
-        })
-        .catch(err => {
-          console.error('Error tulis ke Google Sheets:', err.message);
-        });
-    } else {
-      console.log('Tidak dicatat ke Google Sheets karena form konsultasi belum terisi.');
-    }
+    // Tidak dicatat ke Google Sheets karena bukan form konsultasi
+    console.log('Tidak dicatat ke Google Sheets karena form konsultasi belum terisi.');
 
     // Balas ke Twilio
     const twiml = new MessagingResponse();
