@@ -1,0 +1,195 @@
+{
+  "id": "645cee70-59a2-4c29-a48e-648c3bda2c5d",
+  "name": "wo_greeting_umum",
+  "auto": true,
+  "condition": "",
+  "conditionalFollowupEvents": [],
+  "conditionalResponses": [],
+  "context": [],
+  "contexts": [],
+  "endInteraction": true,
+  "events": [],
+  "fallbackIntent": false,
+  "liveAgentHandoff": false,
+  "parentId": null,
+  "followUpIntents": [],
+  "priority": 500000,
+  "responses": [
+    {
+      "action": "input.welcome",
+      "affectedContexts": [],
+      "parameters": [
+        {
+          "noInputPromptMessages": [],
+          "noMatchPromptMessages": [],
+          "promptMessages": [],
+          "defaultValue": "",
+          "name": "salam_type",
+          "dataType": "@salam_type",
+          "isList": false,
+          "required": false,
+          "prompts": [],
+          "value": "$salam_type",
+          "outputDialogContexts": []
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "messages": [
+        {
+          "type": "message",
+          "condition": "",
+          "speech": [
+            "Selamat datang di Bestday Wedding Planner & Organizer kakak! 🥰 Aku asisten virtual yang siap bantu kakak untuk kenalan sama Bestday. Dengan aku kakak bisa tanya apa saja tentang paket Bestday, estimasi biaya, sampai cara booking jadwal konsultasi dengan owner Bestday lansung lohh. Sebelumnya cerita dulu dong, kakak sudah ada rencana tanggal nikah?"
+          ]
+        }
+      ],
+      "resetContexts": false
+    }
+  ],
+  "rootParentId": null,
+  "templates": [],
+  "userSays": [
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "hallo kakak",
+          "userDefined": false,
+          "alias": "salam_type",
+          "meta": "@salam_type"
+        }
+      ],
+      "count": 0,
+      "id": "0985f4fc-f058-40bc-bf54-d0bb262a8aa8",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "haloo kak",
+          "userDefined": false,
+          "alias": "salam_type",
+          "meta": "@salam_type"
+        }
+      ],
+      "count": 0,
+      "id": "920330a1-4610-4560-a247-03aeb49866a1",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "haloo",
+          "userDefined": false,
+          "alias": "salam_type",
+          "meta": "@salam_type"
+        }
+      ],
+      "count": 0,
+      "id": "3140ec7c-201b-4506-8beb-fcaa913cfd49",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "selamat malam kak",
+          "userDefined": false,
+          "alias": "salam_type",
+          "meta": "@salam_type"
+        }
+      ],
+      "count": 0,
+      "id": "72ad36bf-8b95-494e-9129-6562209e0fce",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "selamat siang kak",
+          "userDefined": true,
+          "alias": "salam_type",
+          "meta": "@salam_type"
+        }
+      ],
+      "count": 0,
+      "id": "f9229ddd-3bf1-4ffa-ad84-510eb2da0c99",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "hai kak",
+          "userDefined": false,
+          "alias": "salam_type",
+          "meta": "@salam_type"
+        }
+      ],
+      "count": 0,
+      "id": "37737c5d-d660-427b-b421-eb7f8186351f",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "hi kak",
+          "userDefined": true,
+          "alias": "salam_type",
+          "meta": "@salam_type"
+        }
+      ],
+      "count": 0,
+      "id": "ae690dfb-0f2c-41ed-8d75-1457a4304702",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "selamat pagi kak",
+          "userDefined": true,
+          "alias": "salam_type",
+          "meta": "@salam_type"
+        }
+      ],
+      "count": 0,
+      "id": "0366d14d-c360-42af-970d-8a42888a44cb",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "assalamualaikum kak",
+          "userDefined": true,
+          "alias": "salam_type",
+          "meta": "@salam_type"
+        }
+      ],
+      "count": 0,
+      "id": "a19c035e-e331-4e31-bfc4-db977b80e75f",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "halo kak",
+          "userDefined": true,
+          "alias": "salam_type",
+          "meta": "@salam_type"
+        }
+      ],
+      "count": 0,
+      "id": "edb50d6d-bc71-4ae8-b39d-40afa44ce638",
+      "updated": null
+    }
+  ],
+  "webhookForSlotFilling": false,
+  "webhookUsed": false
+}

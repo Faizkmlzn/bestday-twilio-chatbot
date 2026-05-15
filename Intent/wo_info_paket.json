@@ -1,0 +1,113 @@
+{
+  "id": "230a4243-60dd-4488-94d0-ac277dcbee84",
+  "name": "wo_info_paket",
+  "auto": true,
+  "condition": "",
+  "conditionalFollowupEvents": [],
+  "conditionalResponses": [],
+  "context": [],
+  "contexts": [],
+  "endInteraction": false,
+  "events": [],
+  "fallbackIntent": false,
+  "liveAgentHandoff": false,
+  "parentId": null,
+  "followUpIntents": [],
+  "priority": 500000,
+  "responses": [
+    {
+      "action": "",
+      "affectedContexts": [],
+      "parameters": [],
+      "defaultResponsePlatforms": {},
+      "messages": [
+        {
+          "type": "message",
+          "condition": "",
+          "speech": [
+            "Bestday punya beberapa paket utama kakak:\n1. Paket Intimate – untuk acara kecil, tamu terbatas.\n2. Paket Silver – paket standar akad + resepsi.\n3. Paket Gold – paket lengkap dengan dekor dan dokumentasi premium.\nKakak mau lihat detail paket yang mana dulu, Intimate, Silver, atau Gold?"
+          ]
+        }
+      ],
+      "resetContexts": false
+    }
+  ],
+  "rootParentId": null,
+  "templates": [],
+  "userSays": [
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "mau lihat paket dulu",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "4a6f2816-1c8d-416c-93f2-6ab73894a8b5",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "list paket Bestday dong",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "b585f807-4c94-4a1f-974e-ea136f1120ff",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "ada paket akad dan resepsi ga kak?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "85211abd-eef1-4bac-b92c-d23248f09791",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paketnya apa saja?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "e46bfff4-f209-4d0b-85b5-1a1c335962ff",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "@salam_type mau tanya paket Bestday",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "2df5f6e0-8aa7-422d-8c48-7dd692f006e1",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "@salam_type kak, mau tanya paketnya apa aja?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "63909e16-6551-4c6a-a5aa-80c827801bae",
+      "updated": null
+    }
+  ],
+  "webhookForSlotFilling": false,
+  "webhookUsed": false
+}

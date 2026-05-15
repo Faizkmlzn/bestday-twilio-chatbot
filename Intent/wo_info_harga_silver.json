@@ -1,0 +1,365 @@
+{
+  "id": "20f2c771-5dce-4647-aa63-90d7ba55f71d",
+  "name": "wo_info_harga_silver",
+  "auto": true,
+  "condition": "",
+  "conditionalFollowupEvents": [],
+  "conditionalResponses": [],
+  "context": [],
+  "contexts": [],
+  "endInteraction": false,
+  "events": [],
+  "fallbackIntent": false,
+  "liveAgentHandoff": false,
+  "parentId": null,
+  "followUpIntents": [],
+  "priority": 500000,
+  "responses": [
+    {
+      "action": "",
+      "affectedContexts": [],
+      "parameters": [
+        {
+          "noInputPromptMessages": [],
+          "noMatchPromptMessages": [],
+          "promptMessages": [],
+          "defaultValue": "",
+          "name": "package_name",
+          "dataType": "@package_name",
+          "isList": false,
+          "required": false,
+          "prompts": [],
+          "value": "$package_name",
+          "outputDialogContexts": []
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "messages": [
+        {
+          "type": "message",
+          "condition": "",
+          "speech": [
+            "Untuk paket Silver, kisaran biayanya mulai dari sekitar 40–50 jutaan kak, sudah termasuk paket akad + resepsi dengan dekor yang rapi dan elegan ✨. Paket ini pas banget buat kakak yang ingin acara terasa mewah tapi tetap aman di budget keluarga 💍. Tim Bestday bakal bantu koordinasi vendor dan alur acara, jadi kakak tinggal datang cantik dan ganteng di hari H tanpa banyak overthinking 😍. \n\nKalau kakak mau, aku bisa jelasin lebih detail isi paket Silver ini, termasuk fasilitas dan benefit yang bakal kakak dapat 💕"
+          ]
+        }
+      ],
+      "resetContexts": false
+    }
+  ],
+  "rootParentId": null,
+  "templates": [],
+  "userSays": [
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "berapa ya kak estimasi budget kalau pilih ",
+          "userDefined": false
+        },
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": "?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "ad328ac8-f4c6-4b28-95c8-ad16a193b618",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " untuk acara nikah biayanya berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "49ea12c8-a696-4742-ad66-454f5486c247",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "aku tertarik ",
+          "userDefined": false
+        },
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": ", harganya berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "3234f15c-7a53-465c-bef9-086bfe1cf386",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "range harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " bestday berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "131eb434-a442-44b3-9fc5-f7f90a854a63",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " itu mulai harga berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "9a8c2a5d-dea3-4f24-913b-f0139d3196fb",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "biaya ",
+          "userDefined": false
+        },
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " untuk akad dan resepsi berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "b5d85d4d-cade-4747-89a9-c856314efb61",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " kisaran harganya berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "f91aa532-adb9-45ed-a789-91b70e47722c",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "price list ",
+          "userDefined": false
+        },
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " dong kak",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "93a2d930-9c81-451a-a884-6e58296f9fc8",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "boleh minta info harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": "?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "bbce570c-58ba-4b57-8ec0-704db508ea2d",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "kalau ambil ",
+          "userDefined": false
+        },
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " kira kira abis berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "de3ab0cc-98b9-4e71-9202-890f27c7038c",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " harganya berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "d63db1cc-fff4-4e35-aed1-7d4d0bdeb103",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "budget untuk ",
+          "userDefined": false
+        },
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " berapa kak?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "e44ada17-3424-4aa6-a330-1c28d59f3e4d",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "kisaran biaya ",
+          "userDefined": false
+        },
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " bestday kak",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "0c56a3e1-5080-4543-9893-c9c862f19a35",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " berapa ya?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "72e6ec4a-5133-485b-b313-9d38707bbeb9",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "kak mau tau harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket silver",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        }
+      ],
+      "count": 0,
+      "id": "7a0856b9-91d4-4d0c-bcaf-6bc77353597e",
+      "updated": null
+    }
+  ],
+  "webhookForSlotFilling": false,
+  "webhookUsed": false
+}

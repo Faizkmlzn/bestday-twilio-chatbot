@@ -1,0 +1,361 @@
+{
+  "id": "1c0442bd-92e0-45a2-9c5a-1a03b52e61cf",
+  "name": "wo_info_harga_intimate",
+  "auto": true,
+  "condition": "",
+  "conditionalFollowupEvents": [],
+  "conditionalResponses": [],
+  "context": [],
+  "contexts": [],
+  "endInteraction": false,
+  "events": [],
+  "fallbackIntent": false,
+  "liveAgentHandoff": false,
+  "parentId": null,
+  "followUpIntents": [],
+  "priority": 500000,
+  "responses": [
+    {
+      "action": "",
+      "affectedContexts": [],
+      "parameters": [
+        {
+          "noInputPromptMessages": [],
+          "noMatchPromptMessages": [],
+          "promptMessages": [],
+          "defaultValue": "",
+          "name": "package_name",
+          "dataType": "@package_name",
+          "isList": false,
+          "required": false,
+          "prompts": [],
+          "value": "$package_name",
+          "outputDialogContexts": []
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "messages": [
+        {
+          "type": "message",
+          "condition": "",
+          "speech": [
+            "Untuk paket Intimate, kisaran biayanya mulai dari sekitar 25–30 jutaan kak, tergantung kebutuhan detail dekor dan vendor pendukung yang kakak pilih ✨. Paket ini cocok banget buat kakak yang pengen suasana akad atau resepsi yang hangat, tamu terbatas, tapi tetap terlihat elegan di foto dan video 📸. Tim Bestday bakal dampingi dari persiapan sampai acara selesai, jadi kakak dan pasangan bisa lebih santai menikmati momen tanpa pusing urusan teknis 💕. \n\nKalau kakak mau, aku bisa jelasin lebih detail isi paket Intimate ini, termasuk fasilitas dan benefit spesial yang bakal kakak dapat 🥰."
+          ]
+        }
+      ],
+      "resetContexts": false
+    }
+  ],
+  "rootParentId": null,
+  "templates": [],
+  "userSays": [
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "berapa ya kak estimasi budget kalau pilih ",
+          "userDefined": false
+        },
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": "?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "95bcccb6-ece0-405b-9a47-7a11f2075ef1",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " untuk acara kecil biayanya berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "46d07e5b-38e7-4189-bb17-a65d68905ea7",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "aku tertarik ",
+          "userDefined": false
+        },
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": ", harganya berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "28fa9bf5-059d-43c3-a3ab-bd152eabffbe",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "range harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket intimate bestday",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " kak",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "1d6fab4b-424d-46dd-a7bf-3753a2a3408d",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " itu mulai harga berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "b7fc429e-d818-43d8-a436-34095fe14be2",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "biaya ",
+          "userDefined": false
+        },
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " untuk akad dan resepsi berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "bbc56322-3d3a-41b1-9276-65ef649c5854",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " kisaran harganya berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "7eb4874e-324a-4f8d-a4cc-e263b6a23bf8",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "price list ",
+          "userDefined": false
+        },
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " dong kak",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "ceecc791-5614-45ef-b260-8258eece631f",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "boleh minta info harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": "?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "5e414cdc-07ec-4539-b546-7c91a2b55c14",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "kalau ambil ",
+          "userDefined": false
+        },
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " kira-kira abis berapa?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "389227d1-cb3d-4bd9-916f-217be16e0914",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " harganya berapa",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "81c4ece5-3a95-438f-953e-088cd97def3b",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "budget untuk ",
+          "userDefined": false
+        },
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " berapa kak",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "e64ad29f-80a2-42d2-9ef4-7a0e64d01464",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "kisaran biaya ",
+          "userDefined": false
+        },
+        {
+          "text": "paket intimate bestday",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        }
+      ],
+      "count": 0,
+      "id": "62a3abc0-cc03-4e94-9cca-18175ba1f6ca",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " berapa ya",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "0e8ce36f-b84e-4358-821d-9c482676e01f",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "kak mau tau harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket intimate",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        }
+      ],
+      "count": 0,
+      "id": "8a0b888e-612c-45e5-a516-72a80fb78271",
+      "updated": null
+    }
+  ],
+  "webhookForSlotFilling": false,
+  "webhookUsed": false
+}

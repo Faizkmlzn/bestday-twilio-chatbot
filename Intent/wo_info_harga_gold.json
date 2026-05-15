@@ -1,0 +1,357 @@
+{
+  "id": "a6e45aa8-b49b-4baa-ae70-2f541d1455e3",
+  "name": "wo_info_harga_gold",
+  "auto": true,
+  "condition": "",
+  "conditionalFollowupEvents": [],
+  "conditionalResponses": [],
+  "context": [],
+  "contexts": [],
+  "endInteraction": false,
+  "events": [],
+  "fallbackIntent": false,
+  "liveAgentHandoff": false,
+  "parentId": null,
+  "followUpIntents": [],
+  "priority": 500000,
+  "responses": [
+    {
+      "action": "",
+      "affectedContexts": [],
+      "parameters": [
+        {
+          "noInputPromptMessages": [],
+          "noMatchPromptMessages": [],
+          "promptMessages": [],
+          "defaultValue": "",
+          "name": "package_name",
+          "dataType": "@package_name",
+          "isList": false,
+          "required": false,
+          "prompts": [],
+          "value": "$package_name",
+          "outputDialogContexts": []
+        }
+      ],
+      "defaultResponsePlatforms": {},
+      "messages": [
+        {
+          "type": "message",
+          "condition": "",
+          "speech": [
+            "Untuk paket Gold, kisaran biayanya mulai dari sekitar 70 jutaan kak, dengan paket dekor yang lebih lengkap dan sentuhan detail yang bikin venue terlihat wah ✨. Paket ini cocok banget buat kakak yang pengen sekali seumur hidup terasa super berkesan, dari pintu masuk tamu sampai panggung utama 💍. Tim Bestday bakal handle koordinasi full di hari H, jadi keluarga bisa fokus menerima tamu sementara kakak dan pasangan menikmati momen tanpa drama teknis sama sekali 😍. \n\n\nKalau kakak mau, aku bisa jelasin lebih detail isi paket Gold ini, termasuk fasilitas dan benefit spesial yang bakal kakak dapat 💕."
+          ]
+        }
+      ],
+      "resetContexts": false
+    }
+  ],
+  "rootParentId": null,
+  "templates": [],
+  "userSays": [
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "berapa ya kak estimasi budget kalau pilih ",
+          "userDefined": false
+        },
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        }
+      ],
+      "count": 0,
+      "id": "dade35dd-3ae3-4505-9b20-0cdec5961408",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " untuk acara nikah biayanya berapa",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "6ec6ae46-6757-4411-9998-0ab8ff8ac060",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "aku tertarik ",
+          "userDefined": false
+        },
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": ", harganya berapa",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "8037ca46-3ab2-4337-912b-0f5c6b5548e0",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "range harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " bestday berapa",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "e92b572e-7ea0-444c-bca4-66c50e9a4347",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " itu mulai harga berapa",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "5435cf56-7117-4777-9bc5-6c3f60323b2d",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "biaya ",
+          "userDefined": false
+        },
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " untuk akad dan resepsi berapa",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "da5b0d6b-8cbe-4fb7-a659-468ebbf9f98f",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " kisaran harganya berapa",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "057a51a2-8d73-4b3e-a469-b5725c9a8508",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "price list ",
+          "userDefined": false
+        },
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " dong kak",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "b2bd8e0e-f3d4-484a-b0d6-5ffae7282b55",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "boleh minta info harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        }
+      ],
+      "count": 0,
+      "id": "e3f8e528-6b14-431f-b070-a21a899b53a3",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "kalau ambil ",
+          "userDefined": false
+        },
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " kira kira abis berapa",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "cf2bcbe3-9329-4d04-a289-9ba64ccf1cd4",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " harganya berapa",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "a58ab3cc-84a4-4646-9b3d-6458f8e93fbd",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "budget untuk ",
+          "userDefined": false
+        },
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " berapa kak",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "466e32ec-47e9-4862-8f67-e6a902555263",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "kisaran biaya ",
+          "userDefined": false
+        },
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " bestday berapa",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "890735a6-e700-4c20-80eb-bf7f4d6d8197",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        },
+        {
+          "text": " berapa ya?",
+          "userDefined": false
+        }
+      ],
+      "count": 0,
+      "id": "7b2d2da2-508a-4783-8aed-9b3f30005d5b",
+      "updated": null
+    },
+    {
+      "isTemplate": false,
+      "data": [
+        {
+          "text": "kak mau tau harga ",
+          "userDefined": false
+        },
+        {
+          "text": "paket gold",
+          "userDefined": false,
+          "alias": "package_name",
+          "meta": "@package_name"
+        }
+      ],
+      "count": 0,
+      "id": "bc45529e-c16f-4eda-826e-49c47aa39b22",
+      "updated": null
+    }
+  ],
+  "webhookForSlotFilling": false,
+  "webhookUsed": false
+}

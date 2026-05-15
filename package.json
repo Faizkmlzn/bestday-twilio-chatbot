@@ -1,0 +1,22 @@
+{
+  "name": "twilio",
+  "version": "1.0.0",
+  "description": "Code explained in youtube. refer the channel playlist: https://www.youtube.com/playlist?list=PLMcMSFfe-ZLhX0df1q9So1uu6o7Mrefwp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/dialogflow": "^7.4.0",
+    "circular-json": "^0.5.9",
+    "dialogflow": "^1.2.0",
+    "dotenv": "^17.2.3",
+    "express": "^4.22.1",
+    "flatted": "^3.2.7",
+    "googleapis": "^170.0.0",
+    "twilio": "^4.8.0"
+  }
+}
