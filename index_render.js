@@ -59,8 +59,6 @@ async function callGDF(req) {
   const userId = req.body.From || 'unknown-user';
   const userText = req.body.Body || '';
 
-  // Gunakan nomor WhatsApp user sebagai session ID
-  // supaya percakapan tiap user lebih konsisten.
   const sessionId = String(userId)
     .replace('whatsapp:', '')
     .replace(/[^\w-]/g, '');
@@ -80,7 +78,6 @@ async function callGDF(req) {
     },
   };
 
-  // Jika knowledge base dipakai, tambahkan queryParams
   if (knowledgeBaseId) {
     const knowledgeBasePath =
       'projects/' + projectId + '/knowledgeBases/' + knowledgeBaseId;
@@ -112,10 +109,8 @@ async function callGDF(req) {
   console.log('>> tanggal_nikah raw:', rawTanggalNikah);
   console.log('>> tanggal_nikah onlyDate:', onlyDateNikah);
 
-  // Jawaban asli dari Dialogflow
   let messageBody = result.fulfillmentText || '';
 
-  // Kalau ada tanggal_nikah, ganti placeholder di text Dialogflow
   if (onlyDateNikah) {
     messageBody = messageBody.replace('{tanggal_nikah}', onlyDateNikah);
   }
@@ -137,9 +132,6 @@ async function callGDF(req) {
   console.log('>> raw parameters:', JSON.stringify(result.parameters));
   console.log('>> salamType parsed:', salamType);
 
-  // =====================
-  // FUNGSI PREFIX SALAM
-  // =====================
   function buildSalamPrefix(salamType) {
     const s = (salamType || '').toLowerCase();
 
@@ -180,14 +172,15 @@ async function callGDF(req) {
 
   return {
     replyText: messageToSend,
-    intentName: intentName,
+    intentName,
     queryText: result.queryText,
-    confidence: confidence,
+    confidence,
   };
 }
 
 // =====================
 // CSV LOGGING
+// CSV lokal Render tetap mencatat semua percakapan
 // =====================
 const csvLogFile = path.join(__dirname, 'chatlog.csv');
 
@@ -195,7 +188,7 @@ function initCsvHeader() {
   if (!fs.existsSync(csvLogFile)) {
     fs.writeFileSync(
       csvLogFile,
-      'time,userId,userText,botReply,intentName,isLead\n',
+      'time,userId,userText,botReply,intentName,isConsultationForm\n',
       'utf8'
     );
   }
@@ -209,7 +202,7 @@ function saveCsvLog(entry) {
   const safeIntentName = (entry.intentName || '').replace(/"/g, '""');
 
   const line =
-    `"${entry.time}","${entry.userId}","${safeUserText}","${safeBotReply}","${safeIntentName}","${entry.isLead}"\n`;
+    `"${entry.time}","${entry.userId}","${safeUserText}","${safeBotReply}","${safeIntentName}","${entry.isConsultationForm}"\n`;
 
   fs.appendFile(csvLogFile, line, 'utf8', (err) => {
     if (err) {
@@ -273,77 +266,85 @@ function getTimeWIB() {
 }
 
 // =====================
-// FILTER LEAD KONSULTASI
+// FILTER FORM KONSULTASI TERISI
+// Google Sheets hanya mencatat jika user mengirim form data diri
 // =====================
-function isSeriousConsultationLead(intentName, userText) {
-  const intent = String(intentName || '').toLowerCase();
-  const text = String(userText || '').toLowerCase();
+function getFieldValue(userText, fieldPatterns) {
+  const lines = String(userText || '')
+    .split(/\r?\n/)
+    .map(line => line.trim())
+    .filter(Boolean);
 
-  // Deteksi utama dari nama intent Dialogflow
-  const intentIndicators = [
-    'konsultasi',
-    'consultation',
-    'admin',
-    'hubungi',
-    'cs',
-    'customer service',
-    'human',
-    'operator',
-    'booking',
-    'jadwalkan',
-  ];
+  for (const line of lines) {
+    for (const pattern of fieldPatterns) {
+      const match = line.match(pattern);
 
-  if (intentIndicators.some(keyword => intent.includes(keyword))) {
-    return true;
+      if (match && match[1]) {
+        return match[1].trim();
+      }
+    }
   }
 
-  // Deteksi cadangan dari isi chat user
-  const textIndicators = [
-    'konsultasi',
-    'mau konsultasi',
-    'ingin konsultasi',
-    'saya mau konsultasi',
-    'aku mau konsultasi',
-    'konsul',
-    'admin',
-    'hubungi admin',
-    'kontak admin',
-    'cs',
-    'customer service',
-    'operator',
-    'orang bestday',
-    'pihak bestday',
-    'tim bestday',
-    'mau tanya langsung',
-    'tanya langsung',
-    'ngobrol langsung',
-    'bicara langsung',
-    'mau lanjut',
-    'ingin lanjut',
-    'lanjut booking',
-    'mau booking',
-    'booking',
-    'book',
-    'jadwal konsultasi',
-    'saya tertarik',
-    'aku tertarik',
-    'tertarik',
-    'mau dibantu',
-    'minta dibantu',
-    'hubungi saya',
-    'kontak saya',
-    'bisa dihubungi',
-    'mau pakai jasa',
-    'mau pakai paket',
-    'mau deal',
-    'deal',
-    'dp',
-    'down payment',
-    'bayar dp',
-    'lanjut dengan bestday',
+  return '';
+}
+
+function isValueFilled(value) {
+  const cleaned = String(value || '')
+    .trim()
+    .replace(/[-_]/g, '')
+    .trim();
+
+  if (!cleaned) return false;
+
+  const emptyIndicators = [
+    'kosong',
+    'belum',
+    'belum ada',
+    'n/a',
+    'na',
+    'none',
+    'tidak ada',
+    'opsional',
   ];
 
-  return textIndicators.some(keyword => text.includes(keyword));
+  return !emptyIndicators.includes(cleaned.toLowerCase());
+}
+
+function isFilledConsultationForm(userText) {
+  const text = String(userText || '');
+
+  const nama = getFieldValue(text, [
+    /^nama\s*[:：]\s*(.+)$/i,
+    /^nama\s+lengkap\s*[:：]\s*(.+)$/i,
+  ]);
+
+  const tanggalAcara = getFieldValue(text, [
+    /^tanggal\s+acara\s*[:：]\s*(.+)$/i,
+    /^tgl\s+acara\s*[:：]\s*(.+)$/i,
+    /^tanggal\s+nikah\s*[:：]\s*(.+)$/i,
+    /^tgl\s+nikah\s*[:：]\s*(.+)$/i,
+    /^tanggal\s+wedding\s*[:：]\s*(.+)$/i,
+  ]);
+
+  const kebutuhan = getFieldValue(text, [
+    /^kebutuhan\s*[:：]\s*(.+)$/i,
+    /^kebutuhan\s+yang\s+di\s+inginkan\s*[:：?]\s*(.+)$/i,
+    /^kebutuhan\s+yang\s+diinginkan\s*[:：?]\s*(.+)$/i,
+    /^kebutuhan\s+diinginkan\s*[:：?]\s*(.+)$/i,
+    /^kebutuhan\s+acara\s*[:：]\s*(.+)$/i,
+  ]);
+
+  const hasNama = isValueFilled(nama);
+  const hasTanggalAcara = isValueFilled(tanggalAcara);
+  const hasKebutuhan = isValueFilled(kebutuhan);
+
+  console.log('Cek form konsultasi:');
+  console.log('Nama:', nama || 'KOSONG');
+  console.log('Tanggal acara:', tanggalAcara || 'KOSONG');
+  console.log('Kebutuhan:', kebutuhan || 'KOSONG');
+
+  // Lokasi acara sengaja tidak wajib karena di template bersifat opsional
+  return hasNama && hasTanggalAcara && hasKebutuhan;
 }
 
 // =====================
@@ -375,23 +376,25 @@ async function handleTwilioWebhook(req, res) {
 
     const timeWIB = getTimeWIB();
 
-    const shouldSaveToSheet = isSeriousConsultationLead(intentName, userText);
+    // Filter utama:
+    // Google Sheets hanya mencatat jika pesan user adalah form konsultasi yang sudah diisi
+    const shouldSaveToSheet = isFilledConsultationForm(userText);
 
-    console.log('Lead konsultasi:', shouldSaveToSheet ? 'YA' : 'TIDAK');
-    console.log('Intent untuk filter lead:', intentName);
-    console.log('Confidence untuk filter lead:', confidence);
+    console.log('Form konsultasi terisi:', shouldSaveToSheet ? 'YA' : 'TIDAK');
+    console.log('Intent:', intentName);
+    console.log('Confidence:', confidence);
 
-    // CSV lokal Render tetap mencatat semua percakapan
+    // CSV lokal tetap mencatat semua percakapan
     saveCsvLog({
       time: timeWIB,
       userId,
       userText,
       botReply: replyText || '',
       intentName,
-      isLead: shouldSaveToSheet ? 'YES' : 'NO',
+      isConsultationForm: shouldSaveToSheet ? 'YES' : 'NO',
     });
 
-    // Google Sheets hanya mencatat calon klien serius / lead konsultasi
+    // Google Sheets hanya mencatat data form konsultasi yang sudah diisi
     if (shouldSaveToSheet) {
       appendToSheet({
         time: timeWIB,
@@ -400,13 +403,13 @@ async function handleTwilioWebhook(req, res) {
         botReply: replyText || '',
       })
         .then(() => {
-          console.log('Berhasil tulis lead konsultasi ke Google Sheets');
+          console.log('Berhasil tulis data form konsultasi ke Google Sheets');
         })
         .catch(err => {
           console.error('Error tulis ke Google Sheets:', err.message);
         });
     } else {
-      console.log('Tidak dicatat ke Google Sheets karena bukan lead konsultasi.');
+      console.log('Tidak dicatat ke Google Sheets karena form konsultasi belum terisi.');
     }
 
     // Balas ke Twilio
@@ -433,11 +436,7 @@ async function handleTwilioWebhook(req, res) {
 // =====================
 // ENDPOINT WEBHOOK
 // =====================
-
-// Endpoint utama sesuai webhook Twilio kamu
 app.post('/reply', handleTwilioWebhook);
-
-// Endpoint tambahan jika nanti ingin pakai /whatsapp
 app.post('/whatsapp', handleTwilioWebhook);
 
 // =====================
