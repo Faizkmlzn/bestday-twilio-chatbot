@@ -432,10 +432,13 @@ async function handleTwilioWebhook(req, res) {
           missingFields.map(field => `- ${field}`).join('\n') +
           '\n\n' +
           'Mohon kirim ulang data konsultasi dengan melengkapi bagian yang masih kosong ya kak:\n\n' +
+          '===============================\n\n' +
           `Nama : ${consultationData.nama || ''}\n` +
           `Tanggal acara : ${consultationData.tanggal || ''}\n` +
           `Lokasi acara (opsional) : ${consultationData.lokasi || ''}\n` +
           `Kebutuhan yang diinginkan : ${consultationData.kebutuhan || ''}\n\n` +
+          '===============================\n\n' +
+
           '~MinBest';
 
         saveCsvLog({
