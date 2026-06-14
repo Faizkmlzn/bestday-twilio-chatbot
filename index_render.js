@@ -267,20 +267,21 @@ function getTimeWIB() {
 
 // =====================
 // FILTER FORM KONSULTASI TERISI
-// Google Sheets hanya mencatat jika user mengirim form data diri
 // =====================
-function getFieldValue(userText, fieldPatterns) {
+// FILTER DAN VALIDASI FORM KONSULTASI
+// =====================
+
+function getFieldValueFromLines(userText, fieldPatterns) {
   const lines = String(userText || '')
     .split(/\r?\n/)
-    .map(line => line.trim())
-    .filter(Boolean);
+    .map(line => line.trim());
 
   for (const line of lines) {
     for (const pattern of fieldPatterns) {
       const match = line.match(pattern);
 
-      if (match && match[1]) {
-        return match[1].trim();
+      if (match) {
+        return (match[1] || '').trim();
       }
     }
   }
@@ -310,146 +311,70 @@ function isValueFilled(value) {
   return !emptyIndicators.includes(cleaned.toLowerCase());
 }
 
-function isFilledConsultationForm(userText) {
-  const text = String(userText || '');
+function isConsultationFormFormat(userText) {
+  const text = String(userText || '').toLowerCase();
 
-  const nama = getFieldValue(text, [
-    /^nama\s*[:：]\s*(.+)$/i,
-    /^nama\s+lengkap\s*[:：]\s*(.+)$/i,
-  ]);
-
-  const tanggalAcara = getFieldValue(text, [
-    /^tanggal\s+acara\s*[:：]\s*(.+)$/i,
-    /^tgl\s+acara\s*[:：]\s*(.+)$/i,
-    /^tanggal\s+nikah\s*[:：]\s*(.+)$/i,
-    /^tgl\s+nikah\s*[:：]\s*(.+)$/i,
-    /^tanggal\s+wedding\s*[:：]\s*(.+)$/i,
-  ]);
-
-  const kebutuhan = getFieldValue(text, [
-    /^kebutuhan\s*[:：]\s*(.+)$/i,
-    /^kebutuhan\s+yang\s+di\s+inginkan\s*[:：?]\s*(.+)$/i,
-    /^kebutuhan\s+yang\s+diinginkan\s*[:：?]\s*(.+)$/i,
-    /^kebutuhan\s+diinginkan\s*[:：?]\s*(.+)$/i,
-    /^kebutuhan\s+acara\s*[:：]\s*(.+)$/i,
-  ]);
-
-  const hasNama = isValueFilled(nama);
-  const hasTanggalAcara = isValueFilled(tanggalAcara);
-  const hasKebutuhan = isValueFilled(kebutuhan);
-
-  console.log('Cek form konsultasi:');
-  console.log('Nama:', nama || 'KOSONG');
-  console.log('Tanggal acara:', tanggalAcara || 'KOSONG');
-  console.log('Kebutuhan:', kebutuhan || 'KOSONG');
-
-  // Lokasi acara sengaja tidak wajib karena di template bersifat opsional
-  return hasNama && hasTanggalAcara && hasKebutuhan;
+  return (
+    text.includes('nama') &&
+    text.includes('tanggal') &&
+    text.includes('kebutuhan')
+  );
 }
 
 function extractConsultationData(userText) {
-  const text = userText || '';
+  const nama = getFieldValueFromLines(userText, [
+    /^nama\s*[:：]\s*(.*)$/i,
+    /^nama\s+lengkap\s*[:：]\s*(.*)$/i,
+  ]);
 
-  const namaMatch = text.match(/Nama\s*:\s*(.*)/i);
-  const tanggalMatch = text.match(/Tanggal\s*(acara|nikah)?\s*:\s*(.*)/i);
-  const lokasiMatch = text.match(/Lokasi\s*(acara)?\s*(\(opsional\))?\s*:\s*(.*)/i);
+  const tanggal = getFieldValueFromLines(userText, [
+    /^tanggal\s+acara\s*[:：]\s*(.*)$/i,
+    /^tgl\s+acara\s*[:：]\s*(.*)$/i,
+    /^tanggal\s+nikah\s*[:：]\s*(.*)$/i,
+    /^tgl\s+nikah\s*[:：]\s*(.*)$/i,
+    /^tanggal\s+wedding\s*[:：]\s*(.*)$/i,
+  ]);
 
-  let kebutuhan = '';
+  const lokasi = getFieldValueFromLines(userText, [
+    /^lokasi\s+acara\s*(?:\(opsional\))?\s*[:：]\s*(.*)$/i,
+    /^lokasi\s*(?:\(opsional\))?\s*[:：]\s*(.*)$/i,
+  ]);
 
-  const kebutuhanMatch = text.match(/Kebutuhan\s*(yang\s*di\s*inginkan|yang\s*diinginkan)?\s*\??\s*:?\s*(.*)/i);
+  const kebutuhan = getFieldValueFromLines(userText, [
+    /^kebutuhan\s*[:：]\s*(.*)$/i,
+    /^kebutuhan\s+yang\s+di\s*inginkan\s*[:：]\s*(.*)$/i,
+    /^kebutuhan\s+yang\s+diinginkan\s*[:：]\s*(.*)$/i,
+    /^kebutuhan\s+diinginkan\s*[:：]\s*(.*)$/i,
+    /^kebutuhan\s+acara\s*[:：]\s*(.*)$/i,
 
-  if (kebutuhanMatch) {
-    kebutuhan = (kebutuhanMatch[2] || '').trim();
-  }
-
-  const nama = namaMatch ? (namaMatch[1] || '').trim() : '';
-  const tanggal = tanggalMatch ? (tanggalMatch[2] || '').trim() : '';
-  const lokasi = lokasiMatch ? (lokasiMatch[3] || '').trim() : '';
+    // Untuk format pakai tanda tanya:
+    // Kebutuhan yang di inginkan? dekorasi
+    // Kebutuhan yang di inginkan?
+    /^kebutuhan\s+yang\s+di\s*inginkan\s*\?\s*(.*)$/i,
+    /^kebutuhan\s+yang\s+diinginkan\s*\?\s*(.*)$/i,
+    /^kebutuhan\s*\?\s*(.*)$/i,
+  ]);
 
   return {
     nama,
     tanggal,
     lokasi,
-    kebutuhan
-  };
-}
-
-function isConsultationFormFormat(userText) {
-  const text = (userText || '').toLowerCase();
-
-  return (
-    text.includes('nama') &&
-    text.includes('tanggal') &&
-    text.includes('kebutuhan')
-  );
-}
-
-function getMissingConsultationFields(data) {
-  const missingFields = [];
-
-  if (!data.nama) {
-    missingFields.push('Nama');
-  }
-
-  if (!data.tanggal) {
-    missingFields.push('Tanggal acara');
-  }
-
-  if (!data.kebutuhan) {
-    missingFields.push('Kebutuhan yang diinginkan');
-  }
-
-  return missingFields;
-}
-// =====================
-// HANDLER WEBHOOK TWILIO
-// =====================
-// =====================================================
-// HELPER UNTUK CEK FORMAT FORM KONSULTASI
-// =====================================================
-function isConsultationFormFormat(userText) {
-  const text = (userText || '').toLowerCase();
-
-  return (
-    text.includes('nama') &&
-    text.includes('tanggal') &&
-    text.includes('kebutuhan')
-  );
-}
-
-function extractConsultationData(userText) {
-  const text = userText || '';
-
-  const namaMatch = text.match(/\bNama\s*:\s*([^\n\r]*)/i);
-  const tanggalMatch = text.match(/\bTanggal\s*(?:acara|nikah)?\s*:\s*([^\n\r]*)/i);
-  const lokasiMatch = text.match(/\bLokasi\s*(?:acara)?\s*(?:\(opsional\))?\s*:\s*([^\n\r]*)/i);
-
-  // Bisa membaca:
-  // Kebutuhan yang diinginkan : dekor
-  // Kebutuhan yang di inginkan? dekor
-  // Kebutuhan yang diinginkan?
-  const kebutuhanMatch = text.match(/\bKebutuhan[^\n\r]*[?:]\s*([^\n\r]*)/i);
-
-  return {
-    nama: namaMatch ? namaMatch[1].trim() : '',
-    tanggal: tanggalMatch ? tanggalMatch[1].trim() : '',
-    lokasi: lokasiMatch ? lokasiMatch[1].trim() : '',
-    kebutuhan: kebutuhanMatch ? kebutuhanMatch[1].trim() : '',
+    kebutuhan,
   };
 }
 
 function getMissingConsultationFields(data) {
   const missingFields = [];
 
-  if (!data.nama) {
+  if (!isValueFilled(data.nama)) {
     missingFields.push('Nama');
   }
 
-  if (!data.tanggal) {
+  if (!isValueFilled(data.tanggal)) {
     missingFields.push('Tanggal acara');
   }
 
-  if (!data.kebutuhan) {
+  if (!isValueFilled(data.kebutuhan)) {
     missingFields.push('Kebutuhan yang diinginkan');
   }
 
@@ -457,9 +382,9 @@ function getMissingConsultationFields(data) {
   return missingFields;
 }
 
-// =====================================================
+// =====================
 // HANDLER WEBHOOK TWILIO
-// =====================================================
+// =====================
 async function handleTwilioWebhook(req, res) {
   try {
     const userId = req.body.From || '';
@@ -513,7 +438,6 @@ async function handleTwilioWebhook(req, res) {
           `Kebutuhan yang diinginkan : ${consultationData.kebutuhan || ''}\n\n` +
           '~MinBest';
 
-        // CSV tetap mencatat semua percakapan
         saveCsvLog({
           time: timeWIB,
           userId,
@@ -523,7 +447,6 @@ async function handleTwilioWebhook(req, res) {
           isConsultationForm: 'INCOMPLETE',
         });
 
-        // Form belum lengkap, jadi tidak dicatat ke Google Sheets
         console.log('Tidak dicatat ke Google Sheets karena data konsultasi belum lengkap.');
 
         const twiml = new MessagingResponse();
@@ -541,7 +464,6 @@ async function handleTwilioWebhook(req, res) {
         'Nanti admin Bestday akan membantu mengecek detail kebutuhan kakak dan menghubungi kakak untuk konsultasi lebih lanjut. See youu 🙌\n' +
         '~MinBest';
 
-      // CSV tetap mencatat semua percakapan
       saveCsvLog({
         time: timeWIB,
         userId,
@@ -551,7 +473,6 @@ async function handleTwilioWebhook(req, res) {
         isConsultationForm: 'YES',
       });
 
-      // Google Sheets hanya mencatat form konsultasi yang sudah lengkap
       appendToSheet({
         time: timeWIB,
         userId,
@@ -584,7 +505,6 @@ async function handleTwilioWebhook(req, res) {
     console.log('Intent:', intentName);
     console.log('Confidence:', confidence);
 
-    // CSV lokal tetap mencatat semua percakapan
     saveCsvLog({
       time: timeWIB,
       userId,
@@ -594,10 +514,8 @@ async function handleTwilioWebhook(req, res) {
       isConsultationForm: 'NO',
     });
 
-    // Tidak dicatat ke Google Sheets karena bukan form konsultasi
     console.log('Tidak dicatat ke Google Sheets karena bukan form konsultasi.');
 
-    // Balas ke Twilio
     const twiml = new MessagingResponse();
 
     twiml.message(
@@ -617,6 +535,8 @@ async function handleTwilioWebhook(req, res) {
     return res.send(twiml.toString());
   }
 }
+
+
 // =====================
 // ENDPOINT WEBHOOK
 // =====================
